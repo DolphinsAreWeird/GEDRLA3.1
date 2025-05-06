@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Exam with Feedback</title>
+
+    <!-- Embedded CSS -->
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            color: #333;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .practice-test {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .excerpt {
+            background-color: #e9e9e9;
+            border-left: 4px solid #ccc;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            white-space: pre-line; /* Preserves line breaks from HTML */
+        }
+
+        .excerpt p {
+            margin: 5px 0;
+        }
+
+        /* Dialogue Speaker Styles */
+        .speaker-steward, .speaker-constable, .speaker-librarian, .speaker-captain {
+            color: #0056b3; /* Blue */
+            font-style: italic;
+        }
+        .speaker-lydia, .speaker-malik, .speaker-jonah, .speaker-clara {
+            color: #5a006e; /* Purple */
+            font-style: italic;
+        }
+        .speaker-lady, .speaker-keh, .speaker-archivist, .speaker-hale {
+            color: #b33c00; /* Orange/Brown */
+            font-style: italic;
+        }
+        .speaker-narrator { /* For attributions like 'she said' if needed separately */
+            /* color: #555; */
+        }
+
+
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+
+        .question p strong {
+            color: #555;
+        }
+
+        label {
+            display: block; /* Makes radio buttons stack nicely */
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        input.order-input {
+            width: 40px; /* Small input box for numbers */
+            margin-right: 10px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Results Area Styling */
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc; /* Changed from dashed */
+            background-color: #f9f9f9;
+            color: #333;
+            border-radius: 5px;
+        }
+        .results h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .feedback-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #ddd;
+        }
+        .feedback-item:last-child {
+            border-bottom: none;
+        }
+        .feedback-item p {
+            margin: 5px 0;
+        }
+        .feedback-item strong { /* Question number */
+             color: #333;
+        }
+        .feedback-item em { /* Explanation labels */
+            color: #555;
+            font-style: normal; /* Override italic if needed */
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Reading Comprehension Practice</h1>
+
+    <!-- Practice 2 Section -->
+    <div class="practice-test" id="practice-2">
+        <h2>Practice 2</h2>
+        <div class="excerpt">
+            <p><strong>Questions 1 through 4 refer to the following excerpt from a short story.</strong></p>
+            <p>EXCERPTED FROM “THE MISSING BROOCH”</p>
+            <p>1 The sun was setting when Lydia, a housemaid at the manor, was summoned to the study.<br>
+            2 The steward, Mr. Wenton, gave her a cold glance.<br>
+            3 <span class="speaker-steward">“Lydia, it’s been reported you were the last person seen near Lady Elridge’s dresser.”</span><br>
+            4 <span class="speaker-lydia">“I was tidying, sir, like I do every evening. Is something wrong?”</span><br>
+            5 <span class="speaker-steward">“Lady Elridge’s sapphire brooch has vanished.”</span><br>
+            6 <span class="speaker-lydia">Lydia stepped back. “Vanished?”</span><br>
+            7 <span class="speaker-steward">“And Martha, the upstairs maid, says she saw you slip something into your apron.”</span><br>
+            8 <span class="speaker-lydia">Lydia gasped. “She lies! I picked up a fallen spoon—look, here!”</span><br>
+            9 From her apron pocket, she produced a dull silver spoon.<br>
+            10 Mr. Wenton frowned, clearly unconvinced.<br>
+            11 <span class="speaker-steward">“You expect me to believe this is all you took?”</span><br>
+            12 <span class="speaker-lydia">“I swear on my mother’s grave, sir. That’s all!”</span><br>
+            13 <span class="speaker-steward">“Then why were you seen lingering near the drawer for so long?”</span><br>
+            14 <span class="speaker-lydia">“I dropped the spoon and it rolled under the vanity—I was trying to reach it, that’s all!”</span><br>
+            15 Mr. Wenton sighed, then rang the bell.<br>
+            16 Lady Elridge entered, her expression grave.<br>
+            17 <span class="speaker-lady">“Let her be searched,” she said.</span><br>
+            18 <span class="speaker-lydia">Lydia’s eyes welled with tears. “I’ve done nothing wrong.”</span><br>
+            19 The butler searched Lydia thoroughly. No brooch.<br>
+            20 <span class="speaker-lady">Lady Elridge turned away. “Let her go—for now.”</span></p>
+        </div>
+
+        <form class="exam-form" id="form-practice-2">
+            <div class="question">
+                <p><strong>1. What was Lydia doing when she produced the spoon from her apron (paragraph 8)?</strong></p>
+                <label><input type="radio" name="p2q1" value="A"> A. Claiming that Martha had planted it</label><br>
+                <label><input type="radio" name="p2q1" value="B"> B. Showing what she believed had been misunderstood</label><br>
+                <label><input type="radio" name="p2q1" value="C"> C. Offering to trade it for mercy</label><br>
+                <label><input type="radio" name="p2q1" value="D"> D. Preparing to strike the steward with it</label><br>
+            </div>
+
+            <div class="question">
+                <p><strong>2. How did Lydia respond when Lady Elridge ordered her to be searched? She</strong></p>
+                <label><input type="radio" name="p2q2" value="A"> A. burst into anger and fled the room</label><br>
+                <label><input type="radio" name="p2q2" value="B"> B. became fearful but tried to protest</label><br>
+                <label><input type="radio" name="p2q2" value="C"> C. wept and declared her innocence</label><br>
+                <label><input type="radio" name="p2q2" value="D"> D. attempted to blame the upstairs maid</label><br>
+            </div>
+
+            <div class="question">
+                <p><strong>3. Which of the following statements best describes the conflict in this excerpt?</strong></p>
+                <label><input type="radio" name="p2q3" value="A"> A. A noblewoman is testing her staff’s loyalty.</label><br>
+                <label><input type="radio" name="p2q3" value="B"> B. A maid is falsely accused of stealing a valuable item.</label><br>
+                <label><input type="radio" name="p2q3" value="C"> C. A brooch is missing, and all the servants are suspects.</label><br>
+                <label><input type="radio" name="p2q3" value="D"> D. A feud between two maids erupts over a misunderstanding.</label><br>
+            </div>
+
+            <div class="question">
+                <p><strong>4. Place the numbers next to the actions to indicate the order in which the actions occurred in the excerpt.</strong></p>
+                <label><input type="number" name="p2q4_1" min="1" max="4" class="order-input"> Lydia is summoned to the study.</label><br>
+                <label><input type="number" name="p2q4_2" min="1" max="4" class="order-input"> Lydia is accused of taking the brooch.</label><br>
+                <label><input type="number" name="p2q4_3" min="1" max="4" class="order-input"> Lydia shows the spoon from her apron.</label><br>
+                <label><input type="number" name="p2q4_4" min="1" max="4" class="order-input"> Lady Elridge allows Lydia to be searched.</label><br>
+            </div>
+
+            <button type="button" class="submit-btn" data-practice="practice-2">Submit Practice 2</button>
+            <div class="results" id="results-practice-2"></div>
+        </form>
+    </div>
+    <hr>
+
+    <!-- Practice 3 Section -->
+    <div class="practice-test" id="practice-3">
+        <h2>Practice 3</h2>
+         <div class="excerpt">
+             <p><strong>Questions 1 through 4 refer to the following excerpt from a short story.</strong></p>
+             <p>EXCERPTED FROM “THE VANISHED SILK SCARF”</p>
+             <p>1  The morning market buzzed as Malik, a spice vendor, arranged his stall.<br>
+             2  Suddenly, the constable strode up, flanked by the stallholder, Mrs. Keh.<br>
+             3  <span class="speaker-keh">“Malik, you were seen near my fabrics,” Mrs. Keh declared.</span><br>
+             4  <span class="speaker-malik">“I pass that way every day, madam. Why?”</span><br>
+             5  <span class="speaker-keh">“My finest silk scarf is missing,” she said, voice tight.</span><br>
+             6  <span class="speaker-constable">The constable added, “A porter claims he saw you tuck something red into your basket.”</span><br>
+             7  <span class="speaker-malik">Malik’s eyes widened. “Red? I picked up this chili pouch I’d dropped—look!”</span><br>
+             8  He pulled a small cloth bag bulging with dried peppers from his basket.<br>
+             9  Mrs. Keh crossed her arms, dubious.<br>
+             10 <span class="speaker-keh">“You expect us to believe a pouch of chilies looks like a silk scarf?”</span><br>
+             11 <span class="speaker-malik">“By the Prophet’s name, it is the truth,” Malik protested.</span><br>
+             12 <span class="speaker-constable">“Then why were you crouched so long behind the fabric stall?”</span><br>
+             13 <span class="speaker-malik">“The pouch rolled beneath a crate; I was hunting for it.”</span><br>
+             14 The constable signaled two guards.<br>
+             15 <span class="speaker-keh">Mrs. Keh nodded. “Search him.”</span><br>
+             16 Malik lifted his arms, trembling but angry.<br>
+             17 The guards turned out his pockets—only spices and coins.<br>
+             18 <span class="speaker-constable">At length, the constable said, “We find nothing—but keep yourself available.”</span><br>
+             19 <span class="speaker-malik">Malik bowed stiffly. “I shall—but know I am no thief.”</span></p>
+        </div>
+        <form class="exam-form" id="form-practice-3">
+            <div class="question">
+                <p><strong>1. What was Malik doing when he “pulled a small cloth bag bulging with dried peppers from his basket” (paragraph 7)?</strong></p>
+                <label><input type="radio" name="p3q1" value="A"> A. Threatening to pour chilies on the constable</label><br>
+                <label><input type="radio" name="p3q1" value="B"> B. Demonstrating what had been mistaken for the scarf</label><br>
+                <label><input type="radio" name="p3q1" value="C"> C. Preparing to bribe Mrs. Keh</label><br>
+                <label><input type="radio" name="p3q1" value="D"> D. Attempting to hide stolen goods</label><br>
+            </div>
+            <div class="question">
+                <p><strong>2. How did Malik react when ordered to be searched? He</strong></p>
+                <label><input type="radio" name="p3q2" value="A"> A. fled into the crowd</label><br>
+                <label><input type="radio" name="p3q2" value="B"> B. raised his arms in reluctant compliance</label><br>
+                <label><input type="radio" name="p3q2" value="C"> C. shouted insults at Mrs. Keh</label><br>
+                <label><input type="radio" name="p3q2" value="D"> D. begged the constable for mercy</label><br>
+            </div>
+            <div class="question">
+                 <p><strong>3. Which statement best describes the conflict in this excerpt?</strong></p>
+                 <label><input type="radio" name="p3q3" value="A"> A. A spice vendor resents unfair market fees.</label><br>
+                 <label><input type="radio" name="p3q3" value="B"> B. A silk merchant loses her goods in a crowded bazaar.</label><br>
+                 <label><input type="radio" name="p3q3" value="C"> C. A vendor is falsely accused of stealing a silk scarf.</label><br>
+                 <label><input type="radio" name="p3q3" value="D"> D. Constables abuse their power in the market district.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>4. Place the numbers next to the actions to show their order in the excerpt.</strong></p>
+                 <label><input type="number" name="p3q4_2" min="1" max="4" class="order-input"> Malik is accused of stealing a silk scarf.</label><br>
+                 <label><input type="number" name="p3q4_3" min="1" max="4" class="order-input"> Malik shows the chili pouch.</label><br>
+                 <label><input type="number" name="p3q4_4" min="1" max="4" class="order-input"> Malik’s pockets are searched.</label><br>
+                 <label><input type="number" name="p3q4_1" min="1" max="4" class="order-input"> Malik is approached by the constable and Mrs. Keh.</label><br>
+            </div>
+             <button type="button" class="submit-btn" data-practice="practice-3">Submit Practice 3</button>
+             <div class="results" id="results-practice-3"></div>
+        </form>
+    </div>
+    <hr>
+
+     <!-- Practice 4 Section -->
+    <div class="practice-test" id="practice-4">
+        <h2>Practice 4</h2>
+        <div class="excerpt">
+            <p><strong>Questions 1 through 4 refer to the following excerpt from a short story.</strong></p>
+             <p>EXCERPTED FROM “THE LOST FIRST EDITION”</p>
+             <p>1  The hush of Rosemont Library broke when Mr. Allen, the head librarian, beckoned Jonah, a weekend volunteer.<br>
+             2  <span class="speaker-librarian">“Jonah, your shift ended after midnight last night, correct?”</span><br>
+             3  <span class="speaker-jonah">“Yes, sir. I locked the archive room myself.”</span><br>
+             4  <span class="speaker-librarian">“This morning, our signed first edition of Arcadian Tales is gone.”</span><br>
+             5  <span class="speaker-jonah">Jonah blinked. “Gone? That can’t be.”</span><br>
+             6  <span class="speaker-archivist">Mrs. Trent, the archivist, interjected, “I saw you slip something flat under your coat when you left.”</span><br>
+             7  <span class="speaker-jonah">Jonah startled. “My coat? That was my sketch pad—I draw clock towers on the walk home.”</span><br>
+             8  He pulled the worn pad from his satchel; charcoal dust flitted out.<br>
+             9  Mr. Allen arched an eyebrow.<br>
+             10 <span class="speaker-librarian">“Do you expect us to confuse that with a leather‑bound volume?”</span><br>
+             11 <span class="speaker-jonah">“I swear by every book on these shelves.”</span><br>
+             12 <span class="speaker-archivist">“Then why did you linger in the archive for so long?” Mrs. Trent demanded.</span><br>
+             13 <span class="speaker-jonah">“A hinge jammed on the display case—I fixed it.”</span><br>
+             14 Mr. Allen exhaled sharply and summoned the security guard.<br>
+             15 <span class="speaker-librarian">“Search him thoroughly,” he ordered.</span><br>
+             16 Jonah’s pulse raced; he emptied every pocket, even his ink‑stained gloves.<br>
+             17 The guard found nothing.<br>
+             18 <span class="speaker-librarian">Mr. Allen frowned. “Very well—you may go, but this matter is not closed.”</span></p>
+        </div>
+        <form class="exam-form" id="form-practice-4">
+            <div class="question">
+                 <p><strong>1. When Jonah produced his sketch pad (paragraph 7), he was</strong></p>
+                 <label><input type="radio" name="p4q1" value="A"> A. revealing what had been mistaken for the book</label><br>
+                 <label><input type="radio" name="p4q1" value="B"> B. planning to trade the pad for leniency</label><br>
+                 <label><input type="radio" name="p4q1" value="C"> C. accusing Mrs. Trent of lying</label><br>
+                 <label><input type="radio" name="p4q1" value="D"> D. preparing to draw a diagram for Mr. Allen</label><br>
+            </div>
+            <div class="question">
+                 <p><strong>2. How did Jonah behave during the search? He</strong></p>
+                 <label><input type="radio" name="p4q2" value="A"> A. angrily refused to cooperate</label><br>
+                 <label><input type="radio" name="p4q2" value="B"> B. nervously but openly complied</label><br>
+                 <label><input type="radio" name="p4q2" value="C"> C. tried to escape through the reading room</label><br>
+                 <label><input type="radio" name="p4q2" value="D"> D. accused the guard of conspiracy</label><br>
+            </div>
+            <div class="question">
+                 <p><strong>3. Which statement best describes the conflict?</strong></p>
+                 <label><input type="radio" name="p4q3" value="A"> A. A librarian distrusts modern volunteers.</label><br>
+                 <label><input type="radio" name="p4q3" value="B"> B. Archive security protocols are too strict.</label><br>
+                 <label><input type="radio" name="p4q3" value="C"> C. A volunteer is suspected of stealing a rare book.</label><br>
+                 <label><input type="radio" name="p4q3" value="D"> D. A valuable first edition is damaged beyond repair.</label><br>
+            </div>
+            <div class="question">
+                 <p><strong>4. Order of actions:</strong></p>
+                 <label><input type="number" name="p4q4_2" min="1" max="4" class="order-input"> Jonah is told the first edition is missing.</label><br>
+                 <label><input type="number" name="p4q4_3" min="1" max="4" class="order-input"> Jonah produces his sketch pad.</label><br>
+                 <label><input type="number" name="p4q4_4" min="1" max="4" class="order-input"> Jonah is searched by security.</label><br>
+                 <label><input type="number" name="p4q4_1" min="1" max="4" class="order-input"> Mr. Allen summons Jonah to speak.</label><br>
+            </div>
+             <button type="button" class="submit-btn" data-practice="practice-4">Submit Practice 4</button>
+             <div class="results" id="results-practice-4"></div>
+        </form>
+    </div>
+    <hr>
+
+     <!-- Practice 5 Section -->
+    <div class="practice-test" id="practice-5">
+        <h2>Practice 5</h2>
+        <div class="excerpt">
+            <p><strong>Questions 1 through 4 refer to the following excerpt from a short story.</strong></p>
+            <p>EXCERPTED FROM “THE CAPTAIN’S COMPASS”</p>
+            <p>1  Fog hung over the deck as First Mate Clara faced Captain Ruiz.<br>
+            2  <span class="speaker-captain">“Clara,” the captain said, “the brass compass from my cabin is missing.”</span><br>
+            3  <span class="speaker-clara">“Missing, sir?” Clara stiffened.</span><br>
+            4  <span class="speaker-hale">Quartermaster Hale stepped forward. “I saw Clara leave the cabin holding something wrapped in cloth.”</span><br>
+            5  <span class="speaker-clara">Clara’s cheeks flushed. “That was the galley’s serving tray—I mended its handle.”</span><br>
+            6  She unrolled a square of canvas, revealing the dented tin platter.<br>
+            7  Captain Ruiz narrowed his eyes.<br>
+            8  <span class="speaker-captain">“You claim this platter was mistaken for my compass?”</span><br>
+            9  <span class="speaker-clara">“On my honor as an officer—yes.”</span><br>
+            10 <span class="speaker-captain">“Yet Hale reports you lingered by my chart table.”</span><br>
+            11 <span class="speaker-clara">“I was replacing a broken lamp wick, sir. The storm yesterday left us half‑lit.”</span><br>
+            12 The captain nodded to two sailors. <span class="speaker-captain">“Conduct a search.”</span><br>
+            13 Clara steadied her breath while her sea‑coat, belt pouch, and boots were examined.<br>
+            14 Only tools and a coil of twine emerged.<br>
+            15 <span class="speaker-captain">Captain Ruiz drummed his fingers on the rail. “Very well, you are free—but the compass must be found.”</span><br>
+            16 <span class="speaker-clara">Clara saluted, jaw set. “Aye, Captain. And I will help find the true thief.”</span></p>
+        </div>
+        <form class="exam-form" id="form-practice-5">
+             <div class="question">
+                 <p><strong>1. What was Clara doing when she unrolled the canvas and revealed the tin platter (paragraph 6)?</strong></p>
+                 <label><input type="radio" name="p5q1" value="A"> A. Proving what she had actually carried</label><br>
+                 <label><input type="radio" name="p5q1" value="B"> B. Hiding a second, smaller compass</label><br>
+                 <label><input type="radio" name="p5q1" value="C"> C. Attempting to barter with the captain</label><br>
+                 <label><input type="radio" name="p5q1" value="D"> D. Preparing to strike Hale with the platter</label><br>
+            </div>
+            <div class="question">
+                 <p><strong>2. During the search, Clara</strong></p>
+                 <label><input type="radio" name="p5q2" value="A"> A. tried to toss something overboard</label><br>
+                 <label><input type="radio" name="p5q2" value="B"> B. stood calmly but was visibly tense</label><br>
+                 <label><input type="radio" name="p5q2" value="C"> C. laughed at the absurd accusation</label><br>
+                 <label><input type="radio" name="p5q2" value="D"> D. argued that officers could not be searched</label><br>
+            </div>
+            <div class="question">
+                 <p><strong>3. Which statement best describes the conflict?</strong></p>
+                 <label><input type="radio" name="p5q3" value="A"> A. A captain enforces strict discipline during a voyage.</label><br>
+                 <label><input type="radio" name="p5q3" value="B"> B. A first mate is wrongly accused of stealing the captain’s compass.</label><br>
+                 <label><input type="radio" name="p5q3" value="C"> C. A storm causes valuable equipment to be lost at sea.</label><br>
+                 <label><input type="radio" name="p5q3" value="D"> D. Crew members mistrust each other after supplies go missing.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>4. Order of actions:</strong></p>
+                 <label><input type="number" name="p5q4_4" min="1" max="4" class="order-input"> Clara is searched by sailors.</label><br>
+                 <label><input type="number" name="p5q4_1" min="1" max="4" class="order-input"> Captain Ruiz tells Clara the compass is missing.</label><br>
+                 <label><input type="number" name="p5q4_3" min="1" max="4" class="order-input"> Clara presents the repaired serving tray.</label><br>
+                 <label><input type="number" name="p5q4_2" min="1" max="4" class="order-input"> Quartermaster Hale claims to have seen Clara with an object.</label><br>
+            </div>
+             <button type="button" class="submit-btn" data-practice="practice-5">Submit Practice 5</button>
+             <div class="results" id="results-practice-5"></div>
+        </form>
+    </div>
+
+    <!-- Embedded JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Define Correct Answers and Explanations ---
+            const detailedAnswers = {
+                "practice-2": {
+                    q1: {
+                        correct: "B",
+                        explanation: "Lydia produces the spoon (paragraph 8-9) immediately after being accused of hiding something ('slip something into your apron'), presenting it as the innocent object Martha must have seen.",
+                        incorrect_explanations: {
+                            "A": "Lydia claims Martha lies ('She lies!'), but doesn't specifically accuse her of planting the spoon, only of misinterpreting what she saw.",
+                            "C": "There's no language suggesting a trade or bribe; she's offering evidence, not a bargain.",
+                            "D": "Her action is defensive ('look, here!'), showing proof, not preparing for an attack."
+                        }
+                    },
+                    q2: {
+                        correct: "C",
+                        explanation: "Paragraph 18 explicitly states 'Lydia’s eyes welled with tears. “I’ve done nothing wrong.”' This directly shows weeping and proclaiming innocence.",
+                        incorrect_explanations: {
+                            "A": "She does not flee or burst into anger; her reaction is tears and a verbal defense.",
+                            "B": "While likely fearful, the text highlights her weeping and declaration of innocence as the primary response to the search order.",
+                            "D": "She blames Martha earlier (paragraph 8 regarding the spoon) but not specifically in response to Lady Elridge's order to search her."
+                        }
+                    },
+                    q3: {
+                        correct: "B",
+                        explanation: "The central tension revolves around Lydia, a housemaid, being directly accused by the steward and Lady Elridge of stealing the valuable brooch, an accusation she vehemently denies.",
+                        incorrect_explanations: {
+                            "A": "There's no textual evidence Lady Elridge is testing loyalty; she appears genuinely concerned about the missing, valuable item.",
+                            "C": "Although the brooch is missing, the focus of the excerpt is solely on Lydia as the primary suspect, not a general suspicion of all servants.",
+                            "D": "While Martha's statement fuels the conflict, the main issue isn't a feud between maids but the serious accusation of theft against Lydia by her superiors."
+                        }
+                    },
+                    q4: {
+                        correct: ["1", "2", "3", "4"], // Corresponds to HTML name order: p2q4_1, p2q4_2, p2q4_3, p2q4_4
+                        explanation: "The narrative sequence is: 1. Lydia summoned (para 1). 2. Accused of theft (paras 3, 5, 7). 3. Shows spoon as evidence (paras 8-9). 4. Lady Elridge orders search (para 17)."
+                    }
+                },
+                 "practice-3": {
+                    q1: {
+                        correct: "B",
+                        explanation: "Malik pulls out the chili pouch (paragraph 8) right after the constable mentions a witness saw him tuck 'something red' (paragraph 6). He presents it to show what was likely mistaken for the red scarf.",
+                        incorrect_explanations: {
+                            "A": "His action is explanatory ('look!'), not threatening.",
+                            "C": "He's defending his innocence, not offering a bribe.",
+                            "D": "He claims the pouch is his own ('I'd dropped'), not stolen goods."
+                        }
+                    },
+                    q2: {
+                        correct: "B",
+                        explanation: "Paragraph 16 states 'Malik lifted his arms, trembling but angry.' Lifting arms is a sign of compliance with a search, though his trembling and anger show reluctance.",
+                        incorrect_explanations: {
+                            "A": "He complies with the search order, he doesn't flee.",
+                            "C": "He protests his innocence earlier but doesn't shout insults when ordered to be searched.",
+                            "D": "He doesn't beg for mercy; his demeanor is described as 'trembling but angry'."
+                        }
+                    },
+                    q3: {
+                        correct: "C",
+                        explanation: "The core conflict is Malik, a market vendor, being directly accused by Mrs. Keh and the constable of stealing her silk scarf based on witness testimony, which Malik denies.",
+                        incorrect_explanations: {
+                            "A": "There's no mention of market fees.",
+                            "B": "The focus is on the accusation against Malik, not just the loss of the scarf.",
+                            "D": "While the constable is involved, the excerpt focuses on the specific accusation, not a general pattern of abuse of power."
+                        }
+                    },
+                    q4: {
+                        correct: ["1", "2", "3", "4"], // Corresponds to HTML order: p3q4_1, p3q4_2, p3q4_3, p3q4_4 (Note the names were adjusted to match text order: _1, _2, _3, _4)
+                         // Let's re-verify names vs intended order:
+                         // p3q4_2: Accused (Order 2) -> Correct input '2'
+                         // p3q4_3: Shows pouch (Order 3) -> Correct input '3'
+                         // p3q4_4: Searched (Order 4) -> Correct input '4'
+                         // p3q4_1: Approached (Order 1) -> Correct input '1'
+                         // So the array should match the EXPECTED INPUTS for those names: ["1", "2", "3", "4"] based on the *text* content's actual order. Let's adjust JS q4 array to reflect the needed input order for the current names.
+                         // Input for p3q4_1 (Approached) should be 1
+                         // Input for p3q4_2 (Accused) should be 2
+                         // Input for p3q4_3 (Shows pouch) should be 3
+                         // Input for p3q4_4 (Searched) should be 4
+                         // Therefore, the correct input values matching the name suffixes _1, _2, _3, _4 are [1, 2, 3, 4].
+                        correct: ["1", "2", "3", "4"], // The user should enter 1, 2, 3, 4 next to the items as listed.
+                        explanation: "The sequence is: 1. Approached by constable/Keh (para 2). 2. Accused of stealing (paras 3, 5, 6). 3. Shows chili pouch (paras 7-8). 4. Searched (paras 15-17)."
+                     }
+                 },
+                 "practice-4": {
+                    q1: {
+                        correct: "A",
+                        explanation: "Jonah produces the sketch pad (paragraph 7-8) immediately after Mrs. Trent claims she saw him slip 'something flat' under his coat (paragraph 6). He offers it as the item she mistook for the book.",
+                        incorrect_explanations: {
+                            "B": "He's providing evidence of misunderstanding, not bartering.",
+                            "C": "While implying she's mistaken, he doesn't directly accuse her of lying with malicious intent.",
+                            "D": "He mentions drawing clock towers, but doesn't offer to draw anything for Mr. Allen at that moment."
+                        }
+                    },
+                    q2: {
+                        correct: "B",
+                        explanation: "Paragraph 16 describes 'Jonah’s pulse raced' (nervousness) but also that 'he emptied every pocket' (compliance), showing he cooperated despite his anxiety.",
+                        incorrect_explanations: {
+                            "A": "He complies fully, showing no anger or refusal.",
+                            "C": "He stays and undergoes the search.",
+                            "D": "He doesn't accuse the guard of anything; he simply complies."
+                        }
+                    },
+                    q3: {
+                        correct: "C",
+                        explanation: "The main plot point is Jonah, a volunteer, being suspected by the head librarian and archivist of stealing a specific valuable item (the first edition book), based on circumstantial evidence.",
+                        incorrect_explanations: {
+                            "A": "The conflict is specific to the missing book, not a general distrust of volunteers.",
+                            "B": "The security protocols (search) are a result of the conflict, not the cause of it.",
+                            "D": "The book is missing (gone), not described as damaged."
+                        }
+                    },
+                    q4: {
+                         // Check HTML name order vs text order:
+                         // p4q4_2: Told missing (Order 2) -> Input '2'
+                         // p4q4_3: Produces pad (Order 3) -> Input '3'
+                         // p4q4_4: Searched (Order 4) -> Input '4'
+                         // p4q4_1: Summoned (Order 1) -> Input '1'
+                         // Expected inputs are [1, 2, 3, 4] for names _1, _2, _3, _4
+                        correct: ["1", "2", "3", "4"],
+                        explanation: "The order of events: 1. Mr. Allen summons Jonah (para 1). 2. Jonah is told the book is missing (para 4). 3. Jonah produces sketch pad (paras 7-8). 4. Jonah is searched (paras 15-17)."
+                     }
+                 },
+                 "practice-5": {
+                    q1: {
+                        correct: "A",
+                        explanation: "Clara unrolls the canvas revealing the platter (paragraph 6) directly after Hale claims he saw her with 'something wrapped in cloth' (paragraph 4) and she refutes it was the tray (paragraph 5). This action proves her statement.",
+                        incorrect_explanations: {
+                            "B": "She reveals a platter, not a compass.",
+                            "C": "She's presenting evidence to clear her name, not making a trade.",
+                            "D": "Her action is defensive/explanatory, not aggressive towards Hale."
+                        }
+                    },
+                    q2: {
+                        correct: "B",
+                        explanation: "Paragraph 13 describes Clara 'steadied her breath' while being searched. This suggests an effort to remain calm despite internal tension or nervousness.",
+                        incorrect_explanations: {
+                            "A": "There's no mention of her trying to discard anything.",
+                            "C": "She is tense ('steadied her breath'), not laughing.",
+                            "D": "She complies with the search without arguing about her rank."
+                        }
+                    },
+                    q3: {
+                        correct: "B",
+                        explanation: "The central conflict is the First Mate, Clara, being accused by Quartermaster Hale and implicitly suspected by Captain Ruiz of stealing the captain's compass, which she denies.",
+                        incorrect_explanations: {
+                            "A": "While discipline is present, the core issue is the specific accusation of theft.",
+                            "C": "A storm is mentioned (paragraph 11) as context for a lamp wick, but not as the cause of the compass loss.",
+                            "D": "While Hale's accusation shows mistrust, the primary conflict is the specific false accusation against Clara."
+                        }
+                    },
+                    q4: {
+                        // Check HTML name order vs text order:
+                        // p5q4_4: Searched (Order 4) -> Input '4'
+                        // p5q4_1: Told missing (Order 1) -> Input '1'
+                        // p5q4_3: Presents tray (Order 3) -> Input '3'
+                        // p5q4_2: Hale claims (Order 2) -> Input '2'
+                        // Expected inputs are [1, 2, 3, 4] for names _1, _2, _3, _4
+                        correct: ["1", "2", "3", "4"],
+                        explanation: "Sequence: 1. Captain tells Clara compass is missing (para 2). 2. Hale makes accusation (para 4). 3. Clara presents tray (paras 5-6). 4. Clara is searched (paras 12-14)."
+                     }
+                 }
+            };
+
+
+            // --- Attach Event Listeners to Submit Buttons ---
+            const submitButtons = document.querySelectorAll('.submit-btn');
+
+            submitButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const practiceId = button.getAttribute('data-practice');
+                    displayResults(practiceId); // Changed function name for clarity
+                });
+            });
+
+           // --- Function to Display Results and Feedback ---
+            function displayResults(practiceId) {
+                const form = document.getElementById(`form-${practiceId}`);
+                const resultsDiv = document.getElementById(`results-${practiceId}`);
+                const answers = detailedAnswers[practiceId]; // Use the detailed structure
+                let score = 0;
+                const totalQuestions = Object.keys(answers).length;
+                let feedbackHtml = `<h3>Detailed Results for ${practiceId.replace('-', ' ')}</h3>`; // Start building feedback string
+
+                // --- Process Q1-Q3 (Multiple Choice) ---
+                for (let i = 1; i <= 3; i++) {
+                    const qKey = `q${i}`; // "q1", "q2", "q3"
+                    const questionData = answers[qKey];
+                    const questionName = `p${practiceId.split('-')[1]}${qKey}`; // "p2q1", etc.
+                    const selectedInput = form.querySelector(`input[name="${questionName}"]:checked`);
+                    const userAnswer = selectedInput ? selectedInput.value : "Not Answered";
+
+                    feedbackHtml += `<div class="feedback-item">`;
+                    feedbackHtml += `<p><strong>Question ${i}:</strong></p>`;
+                    feedbackHtml += `<p>Your Answer: ${userAnswer}</p>`;
+                    feedbackHtml += `<p>Correct Answer: ${questionData.correct}</p>`;
+
+                    if (userAnswer === questionData.correct) {
+                        score++;
+                        feedbackHtml += `<p style="color: green;"><strong>Correct!</strong></p>`;
+                        feedbackHtml += `<p><em>Explanation:</em> ${questionData.explanation}</p>`;
+                    } else {
+                        feedbackHtml += `<p style="color: red;"><strong>Incorrect.</strong></p>`;
+                        // Always show why the correct answer is right
+                        feedbackHtml += `<p><em>Why '${questionData.correct}' is correct:</em> ${questionData.explanation}</p>`;
+                        // If they answered incorrectly (and not 'Not Answered'), show why their specific answer was wrong
+                        if (userAnswer !== "Not Answered" && questionData.incorrect_explanations[userAnswer]) {
+                            feedbackHtml += `<p><em>Why your answer ('${userAnswer}') is incorrect:</em> ${questionData.incorrect_explanations[userAnswer]}</p>`;
+                        } else if (userAnswer === "Not Answered") {
+                             feedbackHtml += `<p><em>You did not select an answer.</em></p>`;
+                        }
+                    }
+                    feedbackHtml += `</div>`;
+                }
+
+                // --- Process Q4 (Ordering) ---
+                const q4Key = 'q4';
+                const q4Data = answers[q4Key];
+                const q4Prefix = `p${practiceId.split('-')[1]}${q4Key}_`; // e.g., "p2q4_"
+                const orderingInputs = form.querySelectorAll(`input[name^="${q4Prefix}"]`); // Select inputs starting with the prefix
+                const userOrderMap = {}; // Store value based on name suffix (_1, _2, etc.)
+                const userOrderRaw = []; // Store values in the order they appear in the HTML
+                orderingInputs.forEach(input => {
+                    const suffix = input.name.split('_')[1]; // Get the '1', '2', '3', '4'
+                    userOrderMap[suffix] = input.value.trim();
+                    userOrderRaw.push(input.value.trim());
+                });
+
+                // Build the user's sequence based on the intended item order (1, 2, 3, 4)
+                const userSequence = q4Data.correct.map((_, index) => userOrderMap[String(index + 1)] || '');
+
+
+                // Check correctness: Compare the constructed userSequence with the correct sequence
+                let orderCorrect = userSequence.length === q4Data.correct.length &&
+                                   userSequence.every((val, index) => val === q4Data.correct[index]);
+
+                // Validate if numbers 1-4 were used exactly once across all inputs
+                const sortedUserRaw = [...userOrderRaw].sort();
+                const uniqueSortedUserRaw = [...new Set(sortedUserRaw)];
+                const expectedSortedNumbers = q4Data.correct.map((_,i) => String(i+1)).sort(); // ["1", "2", "3", "4"]
+
+                let numbersValid = uniqueSortedUserRaw.length === expectedSortedNumbers.length &&
+                                   uniqueSortedUserRaw.every((val, index) => val === expectedSortedNumbers[index]) && // Checks if 1, 2, 3, 4 are present
+                                   userOrderRaw.every(val => val >= '1' && val <= String(q4Data.correct.length)); // Checks range
+
+                const isQ4Correct = orderCorrect && numbersValid;
+
+                feedbackHtml += `<div class="feedback-item">`;
+                feedbackHtml += `<p><strong>Question 4 (Ordering):</strong></p>`;
+                // Display the order the user *assigned* to the list items as they appear on the page
+                feedbackHtml += `<p>Your Assigned Order: ${userOrderRaw.join(', ') || 'Not Answered'}</p>`;
+                feedbackHtml += `<p>Correct Order (for items as listed): ${q4Data.correct.join(', ')}</p>`;
+
+                if (isQ4Correct) {
+                    score++;
+                    feedbackHtml += `<p style="color: green;"><strong>Correct!</strong></p>`;
+                } else {
+                    feedbackHtml += `<p style="color: red;"><strong>Incorrect.</strong></p>`;
+                    if (!numbersValid) {
+                         feedbackHtml += `<p><em>Reason: Make sure you use each number from 1 to ${q4Data.correct.length} exactly once in the boxes.</em></p>`;
+                     } else if (!orderCorrect) {
+                         feedbackHtml += `<p><em>Reason: The sequence of events indicated by your numbers is not correct according to the text.</em></p>`;
+                     }
+                }
+                 // Always show the explanation of the correct sequence
+                 feedbackHtml += `<p><em>Explanation of Correct Sequence:</em> ${q4Data.explanation}</p>`;
+                feedbackHtml += `</div>`;
+
+                // --- Display Final Score and Detailed Feedback ---
+                // Add score summary at the top
+                feedbackHtml = `<p><strong>Final Score: ${score} out of ${totalQuestions}</strong></p><hr style="margin: 15px 0;">` + feedbackHtml;
+
+                resultsDiv.innerHTML = feedbackHtml; // Use innerHTML to render the generated HTML feedback
+                resultsDiv.style.backgroundColor = '#f0f0f0'; // Neutral background for feedback area
+                resultsDiv.style.borderColor = '#ccc';
+                resultsDiv.style.color = '#333'; // Reset color in case it was changed before
+            }
+        });
+    </script>
+
+</body>
+</html>
